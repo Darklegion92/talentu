@@ -23,9 +23,6 @@
             {{ record.last_name }} {{ record.last_name }}
           </template>
         </template>
-        <template v-if="column.key === 'age'">
-          <a-badge show-zero v-model:count="record.age" />
-        </template>
       </a-table>
     </a-col>
   </a-row>
@@ -86,11 +83,18 @@ export default defineComponent({
       this.users = await getUsersLocal();
     },
     async handleFinish(values: User) {
-      this.users = await createUser(values);
-      Modal.success({
-        title: "Usuario creado",
-        content: `El usuario "${values.first_name} ${values.last_name}" ha sido creado correctamente`,
-      });
+      try {
+        this.users = await createUser(values);
+        Modal.success({
+          title: "Usuario creado",
+          content: `El usuario "${values.first_name} ${values.last_name}" ha sido creado correctamente`,
+        });
+      } catch (e: any) {
+        Modal.error({
+          title: "Error al crear usuario",
+          content: e?.message,
+        });
+      }
     },
   },
   mounted() {

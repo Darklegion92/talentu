@@ -54,8 +54,8 @@ import { User } from "@/interfaces/User";
 export default defineComponent({
   props: ["handleFinish"],
   methods: {
-    async finish(values: User) {
-      await this.handleFinish(values);
+    async finish() {
+      await this.handleFinish(this.formState);
       this.formState = {
         email: "",
         first_name: "",

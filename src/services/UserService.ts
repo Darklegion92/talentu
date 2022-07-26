@@ -11,9 +11,16 @@ export const getUsers = async () => {
 }
 
 export const createUser = async (user: User) => {
+    const users = await getUsersLocal()
+
+    const userFind = users.find(({ email }: User) => email === user.email)
+
+    if (userFind) {
+        throw new Error(`Correo ${user.email} ya se encuentra registrado`)
+    }
+
     const id = await generateUserId()
 
-    const users = await getUsersLocal()
 
     users.push({
         ...user,
